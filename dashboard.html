@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - EcoHero Web</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+        @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+        @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css);
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .dashboard {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            box-shadow: 2px 0 5px var(--shadow-color);
+            padding: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            margin-bottom: 20px;
+        }
+
+        .welcome-text {
+            font-size: 24px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--button-text);
+        }
+
+        .menu-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            color: #6bbbbb;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .content-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgb(74, 66, 66);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .carbon-input-form {
+            background-color: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .emissions-chart {
+            height: 300px;
+            margin: 20px 0;
+        }
+
+        .suggestions {
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .suggestion-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .suggestion-item i {
+            color: var(--success-color);
+        }
+
+        .high-emission {
+            color: var(--error-color);
+        }
+
+        .medium-emission {
+            color: var(--warning-color);
+        }
+
+        .low-emission {
+            color: var(--success-color);
+        }
+
+        .submit-btn {
+            background-color: var(--accent-color);
+            color: var(--button-text);
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            transition: opacity 0.3s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">EcoHero</div>
+            <div class="menu-item active">
+                <i class="fas fa-leaf"></i>
+                Carbon Tracker
+            </div>
+            <div class="menu-item" onclick="window.location.href='analytics.html'">
+                <i class="fas fa-chart-bar"></i>
+                Analytics
+            </div>
+            <div class="menu-item" onclick="window.location.href='challenges.html'">
+                <i class="fas fa-trophy"></i>
+                Daily Challenges
+            </div>
+            <div class="menu-item" onclick="window.location.href='settings.html'">
+                <i class="fas fa-cog"></i>
+                Settings
+            </div>
+            <div class="menu-item" id="logout">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="welcome-text">Welcome, <span id="userName">User</span>!</div>
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-cards">
+                <div class="card">
+                    <h3>Daily Carbon Footprint Tracker</h3>
+                    <div class="carbon-input-form">
+                        <form id="carbonForm">
+                            <div class="input-group">
+                                <label>Transportation Mode</label>
+                                <select id="transport" required>
+                                    <option value="">Select mode</option>
+                                    <option value="car">Car</option>
+                                    <option value="bus">Bus</option>
+                                    <option value="train">Train</option>
+                                    <option value="bike">Bicycle</option>
+                                    <option value="walk">Walking</option>
+                                </select>
+                            </div>
+                            <div class="input-group">
+                                <label>Distance Traveled (km)</label>
+                                <input type="number" id="distance" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Energy Usage (kWh)</label>
+                                <input type="number" id="energy" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Diet Type</label>
+                                <select id="diet" required>
+                                    <option value="">Select diet</option>
+                                    <option value="meat">Meat-heavy</option>
+                                    <option value="balanced">Balanced</option>
+                                    <option value="vegetarian">Vegetarian</option>
+                                    <option value="vegan">Vegan</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="submit-btn">Calculate Footprint</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Your Carbon Footprint Breakdown</h3>
+                    <canvas id="emissionsChart" class="emissions-chart"></canvas>
+                </div>
+
+                <div class="card">
+                    <h3>Eco-Friendly Suggestions</h3>
+                    <div id="suggestions" class="suggestions">
+                        <!-- Suggestions will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        // Carbon footprint calculation constants (simplified for example)
+        const EMISSION_FACTORS = {
+            car: 0.2, // kg CO2 per km
+            bus: 0.08,
+            train: 0.04,
+            bike: 0,
+            walk: 0,
+            energy: 0.5, // kg CO2 per kWh
+            meat: 3.3, // kg CO2 per day
+            balanced: 2.5,
+            vegetarian: 1.7,
+            vegan: 1.5
+        };
+
+        // Initialize chart
+        let emissionsChart = new Chart(document.getElementById('emissionsChart'), {
+            type: 'pie',
+            data: {
+                labels: ['Transport', 'Energy', 'Food'],
+                datasets: [{
+                    data: [0, 0, 0],
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
+                }]
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('carbonForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Calculate emissions
+            const transport = document.getElementById('transport').value;
+            const distance = document.getElementById('distance').value;
+            const energy = document.getElementById('energy').value;
+            const diet = document.getElementById('diet').value;
+
+            const transportEmissions = EMISSION_FACTORS[transport] * distance;
+            const energyEmissions = EMISSION_FACTORS.energy * energy;
+            const foodEmissions = EMISSION_FACTORS[diet];
+
+            // Update chart
+            emissionsChart.data.datasets[0].data = [
+                transportEmissions,
+                energyEmissions,
+                foodEmissions
+            ];
+            emissionsChart.update();
+
+            // Calculate total emissions
+            const totalEmissions = transportEmissions + energyEmissions + foodEmissions;
+
+            // Generate suggestions based on emissions
+            const suggestionsDiv = document.getElementById('suggestions');
+            suggestionsDiv.innerHTML = '';
+
+            if (totalEmissions > 10) { // High emissions
+                suggestionsDiv.innerHTML += `
+                    <div class="suggestion-item">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>Your carbon footprint is high. Here are some suggestions:</span>
+                    </div>
+                    <div class="suggestion-item">
+                        <i class="fas fa-car-side"></i>
+                        <span>Consider carpooling or using public transport</span>
+                    </div>
+                    <div class="suggestion-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Switch to energy-efficient appliances</span>
+                    </div>
+                    <div class="suggestion-item">
+                        <i class="fas fa-leaf"></i>
+                        <span>Try incorporating more plant-based meals</span>
+                    </div>
+                `;
+            } else {
+                suggestionsDiv.innerHTML += `
+                    <div class="suggestion-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Great job! Your carbon footprint is relatively low.</span>
+                    </div>
+                    <div class="suggestion-item">
+                        <i class="fas fa-star"></i>
+                        <span>Keep up your eco-friendly habits!</span>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,168 @@
+:root {
+    /* Light theme variables */
+    --bg-primary: #f8f9fa;
+    --bg-secondary: #ffffff;
+    --text-primary: #333333;
+    --text-secondary: #555555;
+    --accent-color: #6bbbbb;
+    --sidebar-bg: rgb(135, 129, 129);
+    --border-color: #ddd;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --button-text: #ffffff;
+    --card-bg: #ffffff;
+    --hover-bg: #f0f0f0;
+    --success-color: #4caf50;
+    --error-color: #f44336;
+    --warning-color: #f57c00;
+    --progress-bg: #e9ecef;
+}
+
+/* Dark theme variables */
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --accent-color: #6bbbbb;
+    --sidebar-bg: #333333;
+    --border-color: #444444;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --button-text: #ffffff;
+    --card-bg: #2d2d2d;
+    --hover-bg: #3d3d3d;
+    --success-color: #45a049;
+    --error-color: #d32f2f;
+    --warning-color: #e65100;
+    --progress-bg: #424242;
+}
+
+/* Common theme transitions */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.sidebar {
+    background-color: var(--sidebar-bg);
+    transition: background-color 0.3s;
+}
+
+.card, .header {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-item {
+    color: var(--text-primary);
+}
+
+.menu-item:hover {
+    background-color: var(--hover-bg);
+}
+
+.menu-item i {
+    color: var(--accent-color);
+}
+
+.logo {
+    color: var(--accent-color) !important;
+}
+
+/* Form Elements */
+.settings-input, input, select {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+.settings-input:focus, input:focus, select:focus {
+    border-color: var(--accent-color);
+    outline: none;
+}
+
+/* Buttons */
+.submit-btn, .complete-btn, .login-btn, .save-button {
+    background-color: var(--accent-color);
+    color: var(--button-text);
+    border: none;
+    transition: opacity 0.3s;
+}
+
+.submit-btn:hover, .complete-btn:hover, .login-btn:hover, .save-button:hover {
+    opacity: 0.9;
+}
+
+/* Text Colors */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+}
+
+label {
+    color: var(--text-secondary);
+}
+
+/* Progress Bars */
+.progress-bar {
+    background-color: var(--progress-bg);
+}
+
+.progress {
+    background-color: var(--accent-color);
+}
+
+/* Quiz and Challenge Elements */
+.quiz-option {
+    border-color: var(--accent-color);
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+}
+
+.quiz-option:hover {
+    background-color: var(--hover-bg);
+}
+
+.quiz-option.correct {
+    background-color: var(--success-color);
+    color: var(--button-text);
+}
+
+.quiz-option.wrong {
+    background-color: var(--error-color);
+    color: var(--button-text);
+}
+
+/* Links */
+a {
+    color: var(--accent-color);
+}
+
+/* Active States */
+.active {
+    background-color: var(--hover-bg);
+}
+
+.section-tab.active {
+    background-color: var(--accent-color);
+    color: var(--button-text);
+}
+
+/* Card Specific */
+.challenge-card {
+    border-left-color: var(--accent-color);
+    background-color: var(--card-bg);
+}
+
+/* Status Colors */
+.high-emission {
+    color: var(--error-color);
+}
+
+.medium-emission {
+    color: var(--warning-color);
+}
+
+.low-emission {
+    color: var(--success-color);
+} 

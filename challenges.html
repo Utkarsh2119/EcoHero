@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Challenges - EcoHero Web</title>
+    <link rel="stylesheet" href="theme.css">
+    <style>
+        @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+        @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+        @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css);
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .dashboard {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            box-shadow: 2px 0 5px var(--shadow-color);
+            padding: 20px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            margin-bottom: 20px;
+        }
+
+        .welcome-text {
+            font-size: 24px;
+        }
+
+        .menu-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .content-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: rgb(84, 73, 73);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .active {
+            background-color: #4a4646;
+        }
+
+        .challenge-card {
+            border-left: 4px solid var(--accent-color);
+            margin-bottom: 15px;
+            background-color: var(--bg-secondary);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .challenge-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            color: var(--text-primary);
+        }
+
+        .complete-btn {
+            background-color: var(--accent-color);
+            color: var(--button-text);
+            padding: 8px 16px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .complete-btn:hover {
+            opacity: 0.9;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: var(--progress-bg);
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--accent-color);
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .section-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .section-tab {
+            padding: 10px 20px;
+            background-color: var(--bg-secondary);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+        }
+
+        .section-tab.active {
+            background-color: var(--accent-color);
+            color: var(--button-text);
+        }
+
+        .section-content {
+            display: none;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .quiz-card {
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background-color: var(--bg-secondary);
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .quiz-option {
+            padding: 10px;
+            border: 1px solid var(--accent-color);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-primary);
+            background-color: var(--bg-secondary);
+        }
+
+        .quiz-option:hover {
+            background-color: var(--hover-bg);
+        }
+
+        .quiz-option.correct {
+            background-color: var(--success-color);
+            color: var(--button-text);
+            border-color: var(--success-color);
+        }
+
+        .quiz-option.wrong {
+            background-color: var(--error-color);
+            color: var(--button-text);
+            border-color: var(--error-color);
+        }
+
+        .quiz-feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            color: var(--text-primary);
+        }
+
+        .eco-points {
+            font-size: 18px;
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">EcoHero</div>
+            <div class="menu-item" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-leaf"></i>
+                Carbon Tracker
+            </div>
+            <div class="menu-item" onclick="window.location.href='analytics.html'">
+                <i class="fas fa-chart-bar"></i>
+                Analytics
+            </div>
+            <div class="menu-item active">
+                <i class="fas fa-trophy"></i>
+                Daily Challenges
+            </div>
+            <div class="menu-item" onclick="window.location.href='settings.html'">
+                <i class="fas fa-cog"></i>
+                Settings
+            </div>
+            <div class="menu-item" id="logout">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="welcome-text">EcoHero Challenges & Games</div>
+            </div>
+
+            <div class="section-tabs">
+                <div class="section-tab active" onclick="switchSection('challenges')">
+                    <i class="fas fa-trophy"></i> Daily Challenges
+                </div>
+                <div class="section-tab" onclick="switchSection('quiz')">
+                    <i class="fas fa-gamepad"></i> Eco Quiz
+                </div>
+            </div>
+
+            <div class="content-cards">
+                <!-- Daily Challenges Section -->
+                <div id="challenges-section" class="section-content active">
+                    <div class="card">
+                        <div class="eco-points">
+                            Your Eco Points: <span id="ecoPoints">0</span> 🌱
+                        </div>
+                        <h3>Today's Challenges</h3>
+                        <div class="challenge-card">
+                            <h4>🚶‍♂️ Walk or Cycle Challenge</h4>
+                            <p>Replace one car journey with walking or cycling today</p>
+                            <div class="challenge-status">
+                                <span>Progress: 0/1</span>
+                                <button class="complete-btn" data-points="50">Complete (+50 points)</button>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="challenge-card">
+                            <h4>🌱 Meatless Monday</h4>
+                            <p>Choose plant-based meals for the entire day</p>
+                            <div class="challenge-status">
+                                <span>Progress: 0/3 meals</span>
+                                <button class="complete-btn" data-points="100">Complete (+100 points)</button>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="challenge-card">
+                            <h4>⚡ Energy Saver</h4>
+                            <p>Unplug all unused electronics for 1 hour</p>
+                            <div class="challenge-status">
+                                <span>Progress: 0/1 hour</span>
+                                <button class="complete-btn" data-points="75">Complete (+75 points)</button>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Eco Quiz Section -->
+                <div id="quiz-section" class="section-content">
+                    <div class="card">
+                        <h3>Environmental Quiz</h3>
+                        <div id="quiz-container">
+                            <div class="quiz-card">
+                                <h4>Question 1: Environmental Development</h4>
+                                <p>Which international agreement, adopted in 2015, sets specific targets for reducing
+                                    global carbon emissions and limiting temperature rise?</p>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" onclick="checkAnswer(this, true)">Paris Agreement</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Kyoto Protocol</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Montreal Protocol</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Geneva Convention</div>
+                                </div>
+                                <div class="quiz-feedback"></div>
+                            </div>
+
+                            <div class="quiz-card">
+                                <h4>Question 2: Environmental Science</h4>
+                                <p>What is the process by which plants convert sunlight, water, and CO2 into energy and
+                                    oxygen?</p>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" onclick="checkAnswer(this, true)">Photosynthesis</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Respiration</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Fermentation</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Decomposition</div>
+                                </div>
+                                <div class="quiz-feedback"></div>
+                            </div>
+
+                            <div class="quiz-card">
+                                <h4>Question 3: Biology & Ecosystems</h4>
+                                <p>Which of these species is considered a 'keystone species' that plays a crucial role
+                                    in maintaining coral reef ecosystems?</p>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" onclick="checkAnswer(this, true)">Parrotfish</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Jellyfish</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Sea Turtle</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Octopus</div>
+                                </div>
+                                <div class="quiz-feedback"></div>
+                            </div>
+
+                            <div class="quiz-card">
+                                <h4>Question 4: WHO & Global Health</h4>
+                                <p>According to WHO, which environmental factor causes the most deaths globally each
+                                    year?</p>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" onclick="checkAnswer(this, true)">Air Pollution</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Unsafe Water</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Chemical Exposure</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">UV Radiation</div>
+                                </div>
+                                <div class="quiz-feedback"></div>
+                            </div>
+
+                            <div class="quiz-card">
+                                <h4>Question 5: Human Impact</h4>
+                                <p>Which human activity is the leading cause of species extinction globally?</p>
+                                <div class="quiz-options">
+                                    <div class="quiz-option" onclick="checkAnswer(this, true)">Habitat Destruction</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Hunting</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Climate Change</div>
+                                    <div class="quiz-option" onclick="checkAnswer(this, false)">Pollution</div>
+                                </div>
+                                <div class="quiz-feedback"></div>
+                            </div>
+
+                            <div class="quiz-summary" style="display: none;">
+                                <h3>Quiz Complete!</h3>
+                                <p>Your Score: <span id="quiz-score">0</span> out of 125 points possible</p>
+                                <button onclick="resetQuiz()" class="complete-btn">Try Again</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="login.js"></script>
+    <script src="theme.js"></script>
+    <script>
+        let ecoPoints = 0;
+
+        // Switch between sections
+        function switchSection(section) {
+            document.querySelectorAll('.section-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.querySelectorAll('.section-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            document.getElementById(`${section}-section`).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Handle challenge completion
+        document.querySelectorAll('.complete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const challengeCard = this.closest('.challenge-card');
+                const progressBar = challengeCard.querySelector('.progress');
+                const points = parseInt(this.dataset.points);
+
+                progressBar.style.width = '100%';
+                this.textContent = 'Completed!';
+                this.style.backgroundColor = '#4caf50';
+                this.disabled = true;
+
+                // Add points
+                ecoPoints += points;
+                document.getElementById('ecoPoints').textContent = ecoPoints;
+            });
+        });
+
+        // Handle quiz answers
+        function checkAnswer(option, isCorrect) {
+            const quizCard = option.closest('.quiz-card');
+            const allOptions = quizCard.querySelectorAll('.quiz-option');
+            const feedback = quizCard.querySelector('.quiz-feedback');
+
+            // Disable all options
+            allOptions.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+
+            // Show correct/wrong feedback
+            if (isCorrect) {
+                option.classList.add('correct');
+                feedback.style.display = 'block';
+                feedback.style.backgroundColor = '#e8f5e9';
+                feedback.textContent = '✅ Correct! +25 points';
+                ecoPoints += 25;
+                document.getElementById('ecoPoints').textContent = ecoPoints;
+            } else {
+                option.classList.add('wrong');
+                feedback.style.display = 'block';
+                feedback.style.backgroundColor = '#ffebee';
+                feedback.textContent = '❌ Incorrect. Try another question!';
+            }
+        }
+    </script>
+</body>
+
+</html>

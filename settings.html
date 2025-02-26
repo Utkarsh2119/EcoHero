@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - EcoHero Web</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css2?family=Lato&display=swap);
+        @import url(https://fonts.googleapis.com/css2?family=Open+Sans&display=swap);
+        @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css);
+
+        :root {
+            /* Light theme variables */
+            --bg-primary: #f8f9fa;
+            --bg-secondary: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #555555;
+            --accent-color: #6bbbbb;
+            --sidebar-bg: rgb(135, 129, 129);
+            --border-color: #ddd;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Dark theme variables */
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --accent-color: #6bbbbb;
+            --sidebar-bg: #333333;
+            --border-color: #444444;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .dashboard {
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: var(--sidebar-bg);
+            box-shadow: 2px 0 5px var(--shadow-color);
+            padding: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--bg-secondary);
+            box-shadow: 0 2px 5px var(--shadow-color);
+            margin-bottom: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .welcome-text {
+            font-size: 24px;
+            color: var(--text-primary);
+        }
+
+        .menu-item {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: var(--text-primary);
+        }
+
+        .menu-item:hover {
+            background-color: var(--bg-secondary);
+        }
+
+        .menu-item i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 30px;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .content-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px var(--shadow-color);
+            transition: background-color 0.3s;
+        }
+
+        .card h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+
+        .active {
+            background-color: var(--bg-secondary);
+        }
+
+        .settings-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .settings-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 14px;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            transition: all 0.3s;
+        }
+
+        .settings-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(107, 187, 187, 0.1);
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.active {
+            border: 2px solid var(--text-primary);
+        }
+
+        /* Save button styles */
+        .save-button {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .save-button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="logo">EcoHero</div>
+            <div class="menu-item" onclick="window.location.href='dashboard.html'">
+                <i class="fas fa-leaf"></i>
+                Carbon Tracker
+            </div>
+            <div class="menu-item" onclick="window.location.href='analytics.html'">
+                <i class="fas fa-chart-bar"></i>
+                Analytics
+            </div>
+            <div class="menu-item" onclick="window.location.href='challenges.html'">
+                <i class="fas fa-trophy"></i>
+                Daily Challenges
+            </div>
+            <div class="menu-item active">
+                <i class="fas fa-cog"></i>
+                Settings
+            </div>
+            <div class="menu-item" id="logout">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div class="welcome-text">Settings</div>
+            </div>
+
+            <div class="content-cards">
+                <div class="card">
+                    <h3>Theme Settings</h3>
+                    <div class="settings-group">
+                        <label for="theme">Website Theme</label>
+                        <select id="theme" class="settings-input">
+                            <option value="light">Light Mode</option>
+                            <option value="dark">Dark Mode</option>
+                            <option value="system">System Default</option>
+                        </select>
+                    </div>
+                    <div class="settings-group">
+                        <label>Color Accent</label>
+                        <div class="color-options">
+                            <div class="color-option active" data-color="#6bbbbb" style="background-color: #6bbbbb;"></div>
+                            <div class="color-option" data-color="#4CAF50" style="background-color: #4CAF50;"></div>
+                            <div class="color-option" data-color="#2196F3" style="background-color: #2196F3;"></div>
+                            <div class="color-option" data-color="#9C27B0" style="background-color: #9C27B0;"></div>
+                        </div>
+                    </div>
+                    <button class="save-button" id="saveTheme">Save Theme</button>
+                </div>
+
+                <div class="card">
+                    <h3>Language Settings</h3>
+                    <div class="settings-group">
+                        <label for="language">Interface Language</label>
+                        <select id="language" class="settings-input">
+                            <option value="en">English</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="de">Deutsch</option>
+                            <option value="zh">中文</option>
+                        </select>
+                    </div>
+                    <div class="settings-group">
+                        <label for="dateFormat">Date Format</label>
+                        <select id="dateFormat" class="settings-input">
+                            <option value="MM/DD/YYYY">MM/DD/YYYY</option>
+                            <option value="DD/MM/YYYY">DD/MM/YYYY</option>
+                            <option value="YYYY-MM-DD">YYYY-MM-DD</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>Time Settings</h3>
+                    <div class="settings-group">
+                        <label for="timeFormat">Time Format</label>
+                        <select id="timeFormat" class="settings-input">
+                            <option value="12">12-hour (AM/PM)</option>
+                            <option value="24">24-hour</option>
+                        </select>
+                    </div>
+                    <div class="settings-group">
+                        <label for="timezone">Timezone</label>
+                        <select id="timezone" class="settings-input">
+                            <option value="UTC">UTC (Coordinated Universal Time)</option>
+                            <option value="EST">EST (Eastern Standard Time)</option>
+                            <option value="PST">PST (Pacific Standard Time)</option>
+                            <option value="GMT">GMT (Greenwich Mean Time)</option>
+                            <option value="IST">IST (Indian Standard Time)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="login.js"></script>
+    <script>
+        // Theme Settings
+        const themeSelect = document.getElementById('theme');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const saveThemeButton = document.getElementById('saveTheme');
+
+        // Function to apply theme
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            } else if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else if (theme === 'system') {
+                // Check system preference
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                }
+            }
+        }
+
+        // Apply theme on page load
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+        themeSelect.value = savedTheme;
+
+        // Listen for theme changes
+        themeSelect.addEventListener('change', function() {
+            const selectedTheme = this.value;
+            applyTheme(selectedTheme);
+        });
+
+        // Save theme settings
+        saveThemeButton.addEventListener('click', function() {
+            const selectedTheme = themeSelect.value;
+            localStorage.setItem('theme', selectedTheme);
+            
+            // Get the active color
+            const activeColor = document.querySelector('.color-option.active').dataset.color;
+            document.documentElement.style.setProperty('--accent-color', activeColor);
+            localStorage.setItem('accentColor', activeColor);
+
+            // Show feedback
+            this.textContent = 'Saved!';
+            setTimeout(() => {
+                this.textContent = 'Save Theme';
+            }, 2000);
+        });
+
+        // Color accent handling
+        colorOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                colorOptions.forEach(opt => opt.classList.remove('active'));
+                this.classList.add('active');
+                const color = this.dataset.color;
+                document.documentElement.style.setProperty('--accent-color', color);
+            });
+        });
+
+        // System theme change detection
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (themeSelect.value === 'system') {
+                    applyTheme('system');
+                }
+            });
+        }
+
+        // Load saved accent color
+        const savedAccentColor = localStorage.getItem('accentColor');
+        if (savedAccentColor) {
+            document.documentElement.style.setProperty('--accent-color', savedAccentColor);
+            colorOptions.forEach(option => {
+                if (option.dataset.color === savedAccentColor) {
+                    option.classList.add('active');
+                } else {
+                    option.classList.remove('active');
+                }
+            });
+        }
+
+        // Language Settings
+        const languageSelect = document.getElementById('language');
+        languageSelect.addEventListener('change', function() {
+            const selectedLanguage = this.value;
+            localStorage.setItem('language', selectedLanguage);
+            // Simulate language change
+            document.documentElement.lang = selectedLanguage;
+        });
+
+        // Date & Time Settings
+        const dateFormatSelect = document.getElementById('dateFormat');
+        const timeFormatSelect = document.getElementById('timeFormat');
+        const timezoneSelect = document.getElementById('timezone');
+
+        // Function to format date according to selected format
+        function formatDate(date, format) {
+            const d = new Date(date);
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            const year = d.getFullYear();
+
+            switch (format) {
+                case 'MM/DD/YYYY':
+                    return `${month}/${day}/${year}`;
+                case 'DD/MM/YYYY':
+                    return `${day}/${month}/${year}`;
+                case 'YYYY-MM-DD':
+                    return `${year}-${month}-${day}`;
+                default:
+                    return `${month}/${day}/${year}`;
+            }
+        }
+
+        // Function to format time according to selected format
+        function formatTime(date, format) {
+            const d = new Date(date);
+            let hours = d.getHours();
+            const minutes = String(d.getMinutes()).padStart(2, '0');
+            
+            if (format === '12') {
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // the hour '0' should be '12'
+                return `${hours}:${minutes} ${ampm}`;
+            }
+            
+            return `${String(hours).padStart(2, '0')}:${minutes}`;
+        }
+
+        // Load saved settings
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLanguage = localStorage.getItem('language');
+            const savedDateFormat = localStorage.getItem('dateFormat');
+            const savedTimeFormat = localStorage.getItem('timeFormat');
+            const savedTimezone = localStorage.getItem('timezone');
+
+            if (savedLanguage) {
+                languageSelect.value = savedLanguage;
+                document.documentElement.lang = savedLanguage;
+            }
+            if (savedDateFormat) dateFormatSelect.value = savedDateFormat;
+            if (savedTimeFormat) timeFormatSelect.value = savedTimeFormat;
+            if (savedTimezone) timezoneSelect.value = savedTimezone;
+        });
+    </script>
+</body>
+
+</html>
