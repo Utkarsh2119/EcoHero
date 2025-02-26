@@ -17,7 +17,7 @@
     *,
     :after,
     :before {
-      border: 0 solid #e5e7eb;
+      border: 0 solid #2f394e;
       box-sizing: border-box;
     }
 
@@ -157,6 +157,7 @@
     input:where([type="reset"]),
     input:where([type="submit"]) {
       -webkit-appearance: button;
+      appearance: button;
       background-color: transparent;
       background-image: none;
     }
@@ -180,15 +181,18 @@
 
     [type="search"] {
       -webkit-appearance: textfield;
+      appearance: textfield;
       outline-offset: -2px;
     }
 
     ::-webkit-search-decoration {
       -webkit-appearance: none;
+      appearance: none;
     }
 
     ::-webkit-file-upload-button {
       -webkit-appearance: button;
+      appearance: button;
       font: inherit;
     }
 
@@ -239,7 +243,7 @@
 
     input::placeholder,
     textarea::placeholder {
-      color: #9ca3af;
+      color: #3d4553;
       opacity: 1;
     }
 
@@ -261,7 +265,6 @@
     svg,
     video {
       display: block;
-      vertical-align: middle;
     }
 
     img,
@@ -300,7 +303,7 @@
       --tw-numeric-fraction: ;
       --tw-ring-inset: ;
       --tw-ring-offset-width: 0px;
-      --tw-ring-offset-color: #fff;
+      --tw-ring-offset-color: #423838;
       --tw-ring-color: rgba(59, 130, 246, 0.5);
       --tw-ring-offset-shadow: 0 0 #0000;
       --tw-ring-shadow: 0 0 #0000;
@@ -354,7 +357,7 @@
       --tw-numeric-fraction: ;
       --tw-ring-inset: ;
       --tw-ring-offset-width: 0px;
-      --tw-ring-offset-color: #fff;
+      --tw-ring-offset-color: #473d3d;
       --tw-ring-color: rgba(59, 130, 246, 0.5);
       --tw-ring-offset-shadow: 0 0 #0000;
       --tw-ring-shadow: 0 0 #0000;
@@ -597,7 +600,7 @@
       min-height: 100vh;
       align-items: center;
       justify-content: center;
-      background: linear-gradient(135deg, #ffffff, #d4d4d4);
+      background: linear-gradient(135deg, #3e3333, #333232);
     }
 
     .login-container {
@@ -641,7 +644,7 @@
 
     .login-btn {
       background-color: var(--accent-color);
-      color: white;
+      color: rgb(56, 43, 43);
       padding: 0.75rem 2rem;
       border: none;
       border-radius: 5px;
@@ -677,11 +680,11 @@
     <form id="loginForm">
       <div class="input-group">
         <label for="username">Username</label>
-        <input type="text" id="username" required>
+        <input type="text" id="username" name="username" required>
       </div>
       <div class="input-group">
         <label for="password">Password</label>
-        <input type="password" id="password" required>
+        <input type="password" id="password" name="password" required>
       </div>
       <button type="submit" class="login-btn">Login</button>
     </form>
@@ -692,5 +695,4 @@
   <script src="login.js"></script>
   <script src="theme.js"></script>
 </body>
-
 </html>

@@ -1,10 +1,11 @@
 // Check if user is logged in
 function checkAuth() {
     const user = localStorage.getItem('user');
-    if (!user && !window.location.href.includes('login.html')) {
+    
+    // If on dashboard page and no user is logged in, redirect to login
+    if (!user && !window.location.pathname.includes('login.html')) {
         window.location.href = 'login.html';
-    } else if (user && window.location.href.includes('login.html')) {
-        window.location.href = 'dashboard.html';
+        return;
     }
 
     // Update username in dashboard if available
@@ -15,49 +16,39 @@ function checkAuth() {
 }
 
 // Handle login form submission
-if (document.querySelector('form')) {
-    document.querySelector('form').addEventListener('submit', function (e) {
-        e.preventDefault();
+document.getElementById('loginForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-        const firstName = document.querySelector('input[placeholder="First Name"]').value;
-        const lastName = document.querySelector('input[placeholder="Last Name"]').value;
-        const email = document.querySelector('input[type="email"]').value;
-        const phone = document.querySelector('input[placeholder="Phone Number"]').value;
-        const password = document.querySelector('input[type="password"]').value;
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
 
-        // Basic validation
-        if (!firstName || !lastName || !email || !phone || !password) {
-            alert('Please fill in all fields');
-            return;
-        }
-
-        // Password validation
-        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
-        if (!passwordRegex.test(password)) {
-            alert('Password must contain minimum 8 chars, 1 uppercase, 1 number and 1 special char');
-            return;
-        }
-
-        // Store user data
+    // Simple validation
+    if (username && password) {
+        // Store user data on successful login
         const userData = {
-            firstName,
-            lastName,
-            email,
-            phone
+            username: username,
+            firstName: username
         };
-
         localStorage.setItem('user', JSON.stringify(userData));
         window.location.href = 'dashboard.html';
-    });
+    } else {
+        alert('Please enter both username and password');
+    }
+});
+
+// Enhanced logout handling
+function logout() {
+    localStorage.removeItem('user');
+    window.location.href = 'login.html';
 }
 
-// Handle logout
-if (document.getElementById('logout')) {
-    document.getElementById('logout').addEventListener('click', function () {
-        localStorage.removeItem('user');
-        window.location.href = 'login.html';
+// Add logout event listener to any element with logout-btn class or logout id
+document.addEventListener('DOMContentLoaded', function() {
+    const logoutButtons = document.querySelectorAll('.logout-btn, #logout');
+    logoutButtons.forEach(button => {
+        button.addEventListener('click', logout);
     });
-}
+});
 
 // Check authentication status when page loads
 checkAuth(); 
